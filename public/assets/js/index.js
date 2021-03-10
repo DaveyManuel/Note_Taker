@@ -1,21 +1,9 @@
-const express = require('express');
-const path = require('path');
-
-const app = express();
-const PORT = 3000;
-
-app.use(express.urlencoded({extended:true}));
-app.use(express.json());
-
 let noteTitle;
 let noteText;
 let saveNoteBtn;
 let newNoteBtn;
 let noteList;
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-
-app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, 'notes.html')));
 
 if (window.location.pathname === '/notes') {
   noteTitle = document.querySelector('.note-title');
@@ -45,10 +33,6 @@ const getNotes = () =>
       'Content-Type': 'application/json',
     },
   })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data)
-  });
 
 const saveNote = (note) =>
   fetch('/api/notes', {
@@ -57,13 +41,6 @@ const saveNote = (note) =>
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(note),
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log(data)
-  })
-  .catch(error =>{
-    console.error('Error:', error);
   })
 
 const deleteNote = (id) =>
@@ -202,5 +179,3 @@ if (window.location.pathname === '/notes') {
 }
 
 getAndRenderNotes();
-
-app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
