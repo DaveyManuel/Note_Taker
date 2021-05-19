@@ -5,7 +5,7 @@ const fs = require('fs');
 let db = require('./db/db.json');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
@@ -34,19 +34,18 @@ app.post('/api/notes', (req,res) => {
     })
 });
 
-app.delete(`/api/notes/${id}`, (req,res)=> {
-    console.log(req.body)
+app.delete(`/api/notes/:id`, (req,res)=> {
     console.log(req.params)
-    console.log(req.params.id)
     let desiredNote = 
     {
         id: req.params.id,
-        title: req.body.title,
-        text: req.body.text
+        // title: req.body.title,
+        // text: req.body.text
     }
 
     console.log(desiredNote)
-    // db.delete(desiredNote) or do I need to splice?
+    db = db.filter(note => note.id !== req.params.id) 
+    console.log(db)
     fs.writeFile('./db/db.json', JSON.stringify(db), error =>{
         if (error) throw error;
         res.json(db);
