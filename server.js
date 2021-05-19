@@ -34,6 +34,25 @@ app.post('/api/notes', (req,res) => {
     })
 });
 
+app.delete(`/api/notes/${id}`, (req,res)=> {
+    console.log(req.body)
+    console.log(req.params)
+    console.log(req.params.id)
+    let desiredNote = 
+    {
+        id: req.params.id,
+        title: req.body.title,
+        text: req.body.text
+    }
+
+    console.log(desiredNote)
+    // db.delete(desiredNote) or do I need to splice?
+    fs.writeFile('./db/db.json', JSON.stringify(db), error =>{
+        if (error) throw error;
+        res.json(db);
+    })
+
+})
 // app.delete
 //console.log(req.params)
 //console.log(req.params.id)
